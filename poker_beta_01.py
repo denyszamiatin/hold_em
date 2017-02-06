@@ -15,7 +15,8 @@ def deck_new():
         ranks = [
                         "2", "3", "4", "5", "6", "7", "8", "9",
                         "10", "jack", "queen", "king", "ace"]
-        suits = ["spades", "hearts", "clubs", "diamonds"]
+        suits = [chr(0x2660), chr(0x2665), chr(0x2663), chr(0x2666)]  # black symbols
+        # suits = [chr(0x2664), chr(0x2661), chr(0x2667), chr(0x2662)] white symbols
 
         for suit in suits:
                 for rank in ranks:
