@@ -68,6 +68,29 @@ def scroll_math(a):
         elif a == "ace":
                 return int(14)
 
+        
+def scroll_pairs(user_card, table_card):
+        """ENG: Faind and calc pairs cards.
+        RUS: Находит и считает парные карты."""
+        scroll = 0
+        if user_card[0][0].count(user_card[1][0]):
+                scroll += scroll_math(user1[1][0])
+        while len(table_card) > 0:
+                card = table_card[0][0]
+                if user_card[0][0].count(card):
+                        scroll += scroll_math(card)
+                if user_card[1][0].count(card):
+                        scroll += scroll_math(card)
+                table_card.remove(table_card[0])
+        return int(scroll)
+
+
+def scroll_bigcard(user_card):
+        """ENG: Faind and calc big card.
+        RUS: Находит и считает большие карты."""
+        scroll = 0
+        scroll = scroll_math(user_card[0][0]) + scroll_math(user_card[1][0])
+        return int(scroll)
 
 # print(poker_deck())
 deck = deck_rand()
@@ -89,41 +112,13 @@ print("User2: ", user2)
 input("move3 \n")
 
 print("Score: The winner, who has a lot of pair cards!!!")
-p1 = 0
-p2 = 0
-
-if user1[0][0].count(user1[1][0]):
-        print("player 1::", user1[1][0], ":::", p1, "+", scroll_math(user1[1][0]))
-        p1 += scroll_math(user1[1][0])
-player1_deck = table[:]
-while len(player1_deck) > 0:
-        card = player1_deck[0][0]
-        if user1[0][0].count(card):
-                print("player 1:", card, ":::", p1, "+", scroll_math(card))
-                p1 += scroll_math(card)
-        if user1[1][0].count(card):
-                print("player 1:", card, ":::", p1, "+", scroll_math(card))
-                p1 += scroll_math(card)
-        player1_deck.remove(player1_deck[0])
-
-if user2[0][0].count(user2[1][0]):
-        print("player 2::", user2[1][0], ":::", p2, "+", scroll_math(user2[1][0]))
-        p2 += scroll_math(user2[1][0])
-player2_deck = table[:]
-while len(player2_deck) > 0:
-        card = player2_deck[0][0]
-        if user2[0][0].count(card):
-                print("player 2:", card, ":::", p2, "+", scroll_math(card))
-                p2 += scroll_math(card)
-        if user2[1][0].count(card):
-                print("player 2:", card, ":::", p2, "+", scroll_math(card))
-                p2 += scroll_math(card)
-        player2_deck.remove(player2_deck[0])
+p1 = scroll_pairs(user1[:], table[:])
+p2 = scroll_pairs(user2[:], table[:])
 
 if p1 == p2:
         print("Score: The winner, who has a big card!!!")
-        p1 = scroll_math(user1[0][0]) + scroll_math(user1[1][0])
-        p2 = scroll_math(user2[0][0]) + scroll_math(user2[1][0])
+        p1 = scroll_bigcard(user1[:])
+        p2 = scroll_bigcard(user2[:])
 
 print("Score: p1 =", p1, " p2 =", p2)
 if p1 > p2:
