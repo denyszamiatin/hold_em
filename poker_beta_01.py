@@ -62,7 +62,7 @@ p2 = 0
 if user1[0][0].count(user1[1][0]):
         print("player 1::", user1[1][0])
         p1 += 1
-player1_deck = table
+player1_deck = table[:]
 while len(player1_deck) > 0:
         card = player1_deck[0][0]
         if user1[0][0].count(card):
@@ -76,7 +76,7 @@ while len(player1_deck) > 0:
 if user2[0][0].count(user2[1][0]):
         print("player 2::", user2[1][0])
         p2 += 1
-player2_deck = table
+player2_deck = table[:]
 while len(player2_deck) > 0:
         card = player2_deck[0][0]
         if user2[0][0].count(card):
