@@ -74,7 +74,7 @@ def scroll_pairs(user_card, table_card):
         RUS: Находит и считает парные карты."""
         scroll = 0
         if user_card[0][0].count(user_card[1][0]):
-                scroll += scroll_math(user1[1][0])
+                scroll += scroll_math(user_card[1][0])
         while len(table_card) > 0:
                 card = table_card[0][0]
                 if user_card[0][0].count(card):
