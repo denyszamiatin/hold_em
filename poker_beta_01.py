@@ -40,7 +40,7 @@ def deck_rand():
         return deck_rand
 
 
-def scroll_math(a):
+def result_math(a):
         if a == "2":
                 return int(2)
         elif a == "3":
@@ -69,28 +69,28 @@ def scroll_math(a):
                 return int(14)
 
         
-def scroll_pairs(user_card, table_card):
-        """ENG: Faind and calc pairs cards.
+def result_pairs(user_card, table_card):
+        """ENG: Finds and count pairs cards.
         RUS: Находит и считает парные карты."""
-        scroll = 0
+        result = 0
         if user_card[0][0].count(user_card[1][0]):
-                scroll += scroll_math(user_card[1][0])
+                result += result_math(user_card[1][0])
         while len(table_card) > 0:
                 card = table_card[0][0]
                 if user_card[0][0].count(card):
-                        scroll += scroll_math(card)
+                        result += result_math(card)
                 if user_card[1][0].count(card):
-                        scroll += scroll_math(card)
+                        result += result_math(card)
                 table_card.remove(table_card[0])
-        return int(scroll)
+        return int(result)
 
 
-def scroll_bigcard(user_card):
-        """ENG: Faind and calc big card.
+def result_bigcard(user_card):
+        """ENG: Finds and count big card.
         RUS: Находит и считает большие карты."""
-        scroll = 0
-        scroll = scroll_math(user_card[0][0]) + scroll_math(user_card[1][0])
-        return int(scroll)
+        result = 0
+        result = result_math(user_card[0][0]) + result_math(user_card[1][0])
+        return int(result)
 
 # print(poker_deck())
 deck = deck_rand()
@@ -112,13 +112,13 @@ print("User2: ", user2)
 input("move3 \n")
 
 print("Score: The winner, who has a lot of pair cards!!!")
-p1 = scroll_pairs(user1[:], table[:])
-p2 = scroll_pairs(user2[:], table[:])
+p1 = result_pairs(user1[:], table[:])
+p2 = result_pairs(user2[:], table[:])
 
 if p1 == p2:
         print("Score: The winner, who has a big card!!!")
-        p1 = scroll_bigcard(user1[:])
-        p2 = scroll_bigcard(user2[:])
+        p1 = result_bigcard(user1[:])
+        p2 = result_bigcard(user2[:])
 
 print("Score: p1 =", p1, " p2 =", p2)
 if p1 > p2:
