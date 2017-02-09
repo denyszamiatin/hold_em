@@ -89,7 +89,10 @@ def result_bigcard(user_card):
         """ENG: Finds and count big card.
         RUS: Находит и считает большие карты."""
         result = 0
-        result = result_math(user_card[0][0]) + result_math(user_card[1][0])
+        if result_math(user_card[0][0]) > result_math(user_card[1][0]):
+                result = result_math(user_card[0][0])
+        else:
+                result = result_math(user_card[1][0])
         return int(result)
 
 # print(poker_deck())
