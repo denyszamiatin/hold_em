@@ -8,7 +8,7 @@ from collections import deque
 from enum import Enum, auto
 
 # comment this to get real random
-random.seed(11)
+#random.seed(11)
 
 class Suits(Enum):
     SPADE = auto()
@@ -26,7 +26,7 @@ class Deck():
     def shuffle(self):
         random.shuffle(self.deck)
 
-    def pop(self, n):
+    def pop(self, n): # maybe we should call it smt like deal ?
         try:
             return [self.deck.pop() for _ in range(n)]
         except IndexError:
@@ -71,6 +71,9 @@ def street_catcher(user_set):
     return catched_streets
 
 # these are good object for unittests
+def biggest_card(user_set):
+    user_ranks = [r for r, s in user_set]
+    return max(user_ranks)
 
 def pair(user_set):
     user_ranks = [r for r, s in user_set]
@@ -84,21 +87,25 @@ def triple(user_set):
     user_ranks = [r for r, s in user_set]
     return bool([r for r in ranks if user_ranks.count(r) == 3])
 
-def kare(user_set):
+def street(user_set):
     user_ranks = [r for r, s in user_set]
-    return bool([r for r in ranks if user_ranks.count(r) == 4])
+    return (max(user_ranks)-min(user_ranks) == 4) and len(user_ranks) == 5
+
+def flash(user_set):
+    user_suits = set(s for r, s in user_set)
+    return len(user_suits) == 1
 
 def full(user_set):
     user_ranks = [r for r, s in user_set]
     ranks_count = {r: user_ranks.count(r) for r in ranks}
     return all([3 in ranks_count, 2 in ranks_count])
 
-def flash(user_set):
-    user_suits = [r for r, s in user_set]
-    return bool([s for s in Suits if user_suits.count(s) == 5])
+def kare(user_set):
+    user_ranks = [r for r, s in user_set]
+    return bool([r for r in ranks if user_ranks.count(r) == 4])
 
-def street(user_set):
-    return bool(street_catcher(user_set))
+def street_flash(user_set):
+    return street(user_set) and flash(user_set)
 
 
 combinations = {
@@ -125,5 +132,4 @@ if __name__ == '__main__':
     table = deck.pop(5)
     u1 = deck.pop(2)
     u2 = deck.pop(2)
-
 
