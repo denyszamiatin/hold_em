@@ -89,7 +89,7 @@ def triple(user_set):
 
 def street(user_set):
     user_ranks = [r for r, s in user_set]
-    return (max(user_ranks)-min(user_ranks) == 4) and len(user_ranks) == 5
+    return (max(user_ranks)-min(user_ranks) == 4) and len(set(user_ranks)) == 5
 
 def flash(user_set):
     user_suits = set(s for r, s in user_set)
