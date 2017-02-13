@@ -98,7 +98,7 @@ def flash(user_set):
 def full(user_set):
     user_ranks = [r for r, s in user_set]
     ranks_count = {r: user_ranks.count(r) for r in ranks}
-    return all([3 in ranks_count, 2 in ranks_count])
+    return all([3 in ranks_count.values(), 2 in ranks_count.values()])
 
 def kare(user_set):
     user_ranks = [r for r, s in user_set]
