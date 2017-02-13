@@ -1,10 +1,10 @@
-from collections import UserDict, defaultdict
-
-from collections import deque
+#!/usr/bin/python3.5
+# coding utf-8
 
 import itertools
 import random
-
+from collections import UserDict, defaultdict
+from collections import deque
 from enum import Enum, auto
 
 # TODO: ANY of poker hands is a 5-card combination - so each combination checking function have to return list of 5 cards.
@@ -20,6 +20,7 @@ class Suits(Enum):
 
 
 RANKS = list(range(2, 15))
+
 
 class Deck():
     def __init__(self):
@@ -93,7 +94,6 @@ def straight_flush(user_set: CardsSet):
 
 def royal_flush(user_set: CardsSet):
     return bool([f for f in straight_flush(user_set) if f == RANKS[-5:]])
-
 
 def pair(user_set: CardsSet):
     user_ranks = user_set.ranks
