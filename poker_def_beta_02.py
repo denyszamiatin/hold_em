@@ -15,7 +15,8 @@ def deck_new():
         ranks = [
                         "2", "3", "4", "5", "6", "7", "8", "9",
                         "10", "jack", "queen", "king", "ace"]
-        # black symbols
+        # suits = ["spades", "hearts", "clubs", "diamonds"]
+		# black symbols
         suits = [chr(0x2660), chr(0x2665), chr(0x2663), chr(0x2666)]
         # white symbols
         # suits = [chr(0x2664), chr(0x2661), chr(0x2667), chr(0x2662)]
@@ -41,32 +42,22 @@ def deck_rand():
 
 
 def result_math(a):
-        if a == "2":
-                return int(2)
-        elif a == "3":
-                return int(3)
-        elif a == "4":
-                return int(4)
-        elif a == "5":
-                return int(5)
-        elif a == "6":
-                return int(6)
-        elif a == "7":
-                return int(7)
-        elif a == "8":
-                return int(8)
-        elif a == "9":
-                return int(9)
-        elif a == "10":
-                return int(10)
-        elif a == "jack":
-                return int(11)
-        elif a == "queen":
-                return int(12)
-        elif a == "king":
-                return int(13)
-        elif a == "ace":
-                return int(14)
+		dict = {
+		'2': 2,
+		'3': 3,
+		'4': 4,
+		'5': 5,
+		'6': 6,
+		'7': 7,
+		'8': 8,
+		'9': 9,
+		'10': 10,
+		'jack': 11,
+		'queen': 12,
+		'king': 13,
+		'ace': 14
+		}
+		return dict.get(a)
 
         
 def result_pairs(user_card, table_card):
@@ -85,15 +76,13 @@ def result_pairs(user_card, table_card):
         return int(result)
 
 
-def result_bigcard(user_card):
-        """ENG: Finds and count big card.
-        RUS: Находит и считает большие карты."""
-        result = 0
-        if result_math(user_card[0][0]) > result_math(user_card[1][0]):
-                result = result_math(user_card[0][0])
-        else:
-                result = result_math(user_card[1][0])
-        return int(result)
+def result_kicker_max(user_card):
+        return max(result_math(user_card[0][0]), result_math(user_card[1][0]))
+		
+		
+def result_kicker_min(user_card):
+		return min(result_math(user_card[0][0]), result_math(user_card[1][0]))
+		
 
 # print(poker_deck())
 deck = deck_rand()
@@ -119,14 +108,17 @@ p1 = result_pairs(user1[:], table[:])
 p2 = result_pairs(user2[:], table[:])
 
 if p1 == p2:
-        print("Score: The winner, who has a big card!!!")
-        p1 = result_bigcard(user1[:])
-        p2 = result_bigcard(user2[:])
+	print("Score: The winner, who has a kicker_max!!!")
+	p1 = result_kicker_max(user1[:])
+	p2 = result_kicker_max(user2[:])
+	if p1 == p2:
+		p1 = result_kicker_min(user1[:])
+		p2 = result_kicker_min(user2[:])
 
-print("Score: p1 =", p1, " p2 =", p2)
+print("Score: User1 =", p1, " User2 =", p2)
 if p1 > p2:
-        print("Winner is pleyer1!!!")
+        print("Winner is User1!!!")
 elif p1 < p2:
-        print("Winner is pleyer2!!!")
+        print("Winner is User2!!!")
 else:
         print("Friendship wins!!!")
