@@ -8,58 +8,35 @@ RUS: Покер - Техасский Холдем
 import random
 
 
-def deck_new():
-        """ENG: It creates the deck
-        RUS: Создает колоду"""
-        deck = []
-        ranks = [
-                        "2", "3", "4", "5", "6", "7", "8", "9",
-                        "10", "jack", "queen", "king", "ace"]
-        # suits = ["spades", "hearts", "clubs", "diamonds"]
-		# black symbols
-        suits = [chr(0x2660), chr(0x2665), chr(0x2663), chr(0x2666)]
-        # white symbols
-        # suits = [chr(0x2664), chr(0x2661), chr(0x2667), chr(0x2662)]
-
-        for suit in suits:
-                for rank in ranks:
-                        card = (rank, suit)
-                        deck.append(card)
-        return(deck)
-
-
 def deck_rand():
-        """ENG: It shuffle the deck
-        RUS: Перемешивает колоду"""
-        deck = deck_new()
-        deck_rand = []
-        while len(deck) > 0:
-                card = random.choice(deck)
-                deck.remove(card)
-                deck_rand.append(card)
-        # print(len(deck_rand))
-        return deck_rand
+        """ENG: It creates and shuffle the deck
+        RUS: Создает и перемешивает колоду"""
+        ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10, "jack", "queen", "king", "ace"]
+        suits = [chr(0x2660), chr(0x2665), chr(0x2663), chr(0x2666)]
+        deck = [(rank, suit) for suit in suits for rank in ranks]
+        random.shuffle(deck)
+        return deck
 
 
 def result_math(a):
-		dict = {
-		'2': 2,
-		'3': 3,
-		'4': 4,
-		'5': 5,
-		'6': 6,
-		'7': 7,
-		'8': 8,
-		'9': 9,
-		'10': 10,
-		'jack': 11,
-		'queen': 12,
-		'king': 13,
-		'ace': 14
-		}
-		return dict.get(a)
+        dict = {
+                '2': 2,
+                '3': 3,
+                '4': 4,
+                '5': 5,
+                '6': 6,
+                '7': 7,
+                '8': 8,
+                '9': 9,
+                '10': 10,
+                'jack': 11,
+                'queen': 12,
+                'king': 13,
+                'ace': 14
+                }
+        return dict.get(a)
 
-        
+
 def result_pairs(user_card, table_card):
         """ENG: Finds and count pairs cards.
         RUS: Находит и считает парные карты."""
@@ -78,13 +55,12 @@ def result_pairs(user_card, table_card):
 
 def result_kicker_max(user_card):
         return max(result_math(user_card[0][0]), result_math(user_card[1][0]))
-		
-		
-def result_kicker_min(user_card):
-		return min(result_math(user_card[0][0]), result_math(user_card[1][0]))
-		
 
-# print(poker_deck())
+
+def result_kicker_min(user_card):
+        return min(result_math(user_card[0][0]), result_math(user_card[1][0]))
+
+
 deck = deck_rand()
 table = deck[0:5]
 user1 = deck[5:7]
@@ -108,12 +84,12 @@ p1 = result_pairs(user1[:], table[:])
 p2 = result_pairs(user2[:], table[:])
 
 if p1 == p2:
-	print("Score: The winner, who has a kicker_max!!!")
-	p1 = result_kicker_max(user1[:])
-	p2 = result_kicker_max(user2[:])
-	if p1 == p2:
-		p1 = result_kicker_min(user1[:])
-		p2 = result_kicker_min(user2[:])
+        print("Score: The winner, who has a kicker_max!!!")
+        p1 = result_kicker_max(user1[:])
+        p2 = result_kicker_max(user2[:])
+        if p1 == p2:
+                p1 = result_kicker_min(user1[:])
+                p2 = result_kicker_min(user2[:])
 
 print("Score: User1 =", p1, " User2 =", p2)
 if p1 > p2:
