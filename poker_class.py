@@ -51,6 +51,10 @@ class CardsSet(UserDict):
             raise ValueError('Only CardsSet can be added to cards set')
 
         return CardsSet({rank: suites + other[rank] for rank, suites in self.data.items()})
+    
+    @property
+    def flipped(self):
+        return {suite: tuple([rank for rank in RANKS if suite in self.data[rank]]) for suite in Suits}
 
     @property
     def ranks(self):
@@ -59,19 +63,13 @@ class CardsSet(UserDict):
 # straights
 
 def straights_catcher(user_set: CardsSet):
-    """mechanism for catching streets. Will (hopefully) return all streets included in user_set"""
-    #TODO: https://www.contrib.andrew.cmu.edu/~gc00/reviews/pokerrules#straight
+    """mechanism for catching straights. Returns all streets included in user_set"""
+    
     user_ranks = set(user_set.ranks)
-
     street_len = 5
-    ranks_deq = deque(RANKS)
-
-    catched_streets = []
-    for _ in range(len(RANKS)):
-        street = set(list(ranks_deq)[:street_len])
-        if street <= user_ranks:
-            catched_streets.append(street)
-        ranks_deq.rotate()
+    
+    source = RANKS[-1:] + RANKS
+    catched_streets = [source[i: i + street_len] for i in range(10) if set(source[i: i + street_len]) <= user_ranks]
 
     return catched_streets
 
@@ -127,10 +125,10 @@ if __name__ == '__main__':
 
     print(two_pairs(
         CardsSet({
-                9 :(Suits.SPADE, Suits.HEART),
-                10:(Suits.SPADE,),
-                11:(Suits.SPADE,),
-                12:(Suits.SPADE, Suits.CLOVER),
-                13:(Suits.SPADE,),
-                14:(Suits.SPADE,),
-        })))
+        9 :(Suits.SPADE, Suits.HEART),
+        10:(Suits.SPADE,),
+        11:(Suits.SPADE,),
+        12:(Suits.SPADE, Suits.CLOVER),
+        13:(Suits.SPADE,),
+        14:(Suits.SPADE,),
+    })))
