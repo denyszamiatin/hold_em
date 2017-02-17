@@ -37,19 +37,27 @@ def result_math(a):
         return dict.get(a)
 
 
+def result_three(user_card, table_card):
+        result = 0
+        table = [a for a, b in table_card]
+        user = [a for a, b in user_card]
+        for card in user:
+                if table.count(card) == 2:
+                        print("Three: ", card)
+                        result = result_math(card)
+        return int(result)
+
+
 def result_pairs(user_card, table_card):
         """ENG: Finds and count pairs cards.
         RUS: Находит и считает парные карты."""
         result = 0
-        if user_card[0][0].count(user_card[1][0]):
-                result += result_math(user_card[1][0])
-        while len(table_card) > 0:
-                card = table_card[0][0]
-                if user_card[0][0].count(card):
-                        result += result_math(card)
-                if user_card[1][0].count(card):
-                        result += result_math(card)
-                table_card.remove(table_card[0])
+        table = [a for a, b in table_card]
+        user = [a for a, b in user_card]
+        for card in user:
+                if table.count(card) == 1:
+                        print("Pair: ", card)
+                        result = result_math(card)
         return int(result)
 
 
@@ -79,17 +87,20 @@ print("User1: ", user1)
 print("User2: ", user2)
 input("move3 \n")
 
-print("Score: The winner, who has a lot of pair cards!!!")
-p1 = result_pairs(user1[:], table[:])
-p2 = result_pairs(user2[:], table[:])
-
+print("Score: The winner, who has three identical cards!!!")
+p1 = result_three(user1[:], table[:])
+p2 = result_three(user2[:], table[:])
 if p1 == p2:
-        print("Score: The winner, who has a kicker_max!!!")
-        p1 = result_kicker_max(user1[:])
-        p2 = result_kicker_max(user2[:])
+        print("Score: The winner, who has a lot of pair cards!!!")
+        p1 = result_pairs(user1[:], table[:])
+        p2 = result_pairs(user2[:], table[:])
         if p1 == p2:
-                p1 = result_kicker_min(user1[:])
-                p2 = result_kicker_min(user2[:])
+                print("Score: The winner, who has a kicker_max!!!")
+                p1 = result_kicker_max(user1[:])
+                p2 = result_kicker_max(user2[:])
+                if p1 == p2:
+                        p1 = result_kicker_min(user1[:])
+                        p2 = result_kicker_min(user2[:])
 
 print("Score: User1 =", p1, " User2 =", p2)
 if p1 > p2:
