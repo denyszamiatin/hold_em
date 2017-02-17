@@ -41,9 +41,10 @@ def result_three(user_card, table_card):
         result = 0
         table = [a for a, b in table_card]
         user = [a for a, b in user_card]
+        if user[0] == user[1] and table.count(user[0]) == 1:
+			result += result_math(user[0])
         for card in user:
                 if table.count(card) == 2:
-                        print("Three: ", card)
                         result = result_math(card)
         return int(result)
 
@@ -54,9 +55,10 @@ def result_pairs(user_card, table_card):
         result = 0
         table = [a for a, b in table_card]
         user = [a for a, b in user_card]
+        if user[0] == user[1]
+			result += result_math(user[0])
         for card in user:
                 if table.count(card) == 1:
-                        print("Pair: ", card)
                         result = result_math(card)
         return int(result)
 
