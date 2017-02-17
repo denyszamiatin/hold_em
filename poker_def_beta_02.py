@@ -11,7 +11,7 @@ import random
 def deck_rand():
         """ENG: It creates and shuffle the deck
         RUS: Создает и перемешивает колоду"""
-        ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10, "jack", "queen", "king", "ace"]
+        ranks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'jack', 'queen', 'king', 'ace']
         suits = [chr(0x2660), chr(0x2665), chr(0x2663), chr(0x2666)]
         deck = [(rank, suit) for suit in suits for rank in ranks]
         random.shuffle(deck)
