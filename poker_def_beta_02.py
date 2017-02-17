@@ -55,7 +55,7 @@ def result_pairs(user_card, table_card):
         result = 0
         table = [a for a, b in table_card]
         user = [a for a, b in user_card]
-        if user[0] == user[1]
+        if user[0] == user[1]:
 			result += result_math(user[0])
         for card in user:
                 if table.count(card) == 1:
