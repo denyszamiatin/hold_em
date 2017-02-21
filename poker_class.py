@@ -1,16 +1,10 @@
-from collections import UserDict, defaultdict
+#!/usr/bin/python3.6
 
-from collections import deque
-
+from collections import UserDict
 import itertools
 import random
-
 from enum import Enum, auto
 
-# TODO: ANY of poker hands is a 5-card combination - so each combination checking function have to return list of 5 cards.
-
-# TODO: probably each combination can have its own type, types need to have defined priority against each other
-# TODO: each type need to have comparison function to compare against combination of the same type
 
 class Suits(Enum):
     SPADE = auto()
@@ -21,7 +15,8 @@ class Suits(Enum):
 
 RANKS = list(range(2, 15))
 
-class Deck():
+
+class Deck:
     def __init__(self):
         self.deck = list(itertools.product(RANKS, Suits))
         random.shuffle(self.deck)
@@ -51,7 +46,7 @@ class CardsSet(UserDict):
             raise ValueError('Only CardsSet can be added to cards set')
 
         return CardsSet({rank: suites + other[rank] for rank, suites in self.data.items()})
-    
+
     @property
     def flipped(self):
         return {suite: tuple([rank for rank in RANKS if suite in self.data[rank]]) for suite in Suits}
@@ -60,26 +55,57 @@ class CardsSet(UserDict):
     def ranks(self):
         return [rr for r, s in self.data.items() for rr in [r] * len(s)]
 
-# straights
+
+def pair(user_set: CardsSet):
+    return [r for r in RANKS if user_set.ranks.count(r) == 2]
+
+
+def two_pairs(user_set: CardsSet):
+    pairs =[]
+    #TODO: need to choose two highest pairs here as hand can contain more than 2
+    if len(pair(user_set)) >= 2:
+        pairs = pair(user_set)
+    return pairs
+
+
+def triple(user_set: CardsSet):
+    return [r for r in RANKS if user_set.ranks.count(r) == 3]
+
 
 def straights_catcher(user_set: CardsSet):
     """mechanism for catching straights. Returns all streets included in user_set"""
-    
+    all_straights_n = 10
     user_ranks = set(user_set.ranks)
     street_len = 5
     
     source = RANKS[-1:] + RANKS
-    catched_streets = [source[i: i + street_len] for i in range(10) if set(source[i: i + street_len]) <= user_ranks]
-
+    catched_streets = [source[i: i + street_len] for i in range(all_straights_n) 
+                       if set(source[i: i + street_len]) <= user_ranks]
+    
     return catched_streets
 
+
+def flush(user_set: CardsSet):
+    flush_len = 5
+
+    flush = {s: sorted(r)[-flush_len:] for s, r in user_set.flipped.items() if len(r) >= flush_len}
+
+    return flush
+
+
+def full(user_set: CardsSet):
+    return triple(user_set), pair(user_set)
+
+
+def kare(user_set: CardsSet):
+    return [rank for rank in user_set.ranks if user_set.ranks.count(rank) == 4]
+
+
 def straight_flush(user_set: CardsSet):
-    """ return is a list of straight_flushes
-    each straight flush is a tuple (straight_contents)
+    """ returns is a list of straight_flushes
+    each straight flush is a list for now (straight_contents)
     """
-
     straights = straights_catcher(user_set)
-
     str_flushes = []
     for suite in Suits:
         for strght in straights:
@@ -89,46 +115,31 @@ def straight_flush(user_set: CardsSet):
 
     return str_flushes
 
+
 def royal_flush(user_set: CardsSet):
     return bool([f for f in straight_flush(user_set) if f == RANKS[-5:]])
 
 
-def pair(user_set: CardsSet):
-    user_ranks = user_set.ranks
-    return [r for r in RANKS if user_ranks.count(r) == 2]
+class Player:
 
-def two_pairs(user_set: CardsSet):
-    #TODO: need to choose two highest pairs here as hand can contain more than 2
-    return 2 <= len(pair(user_set))
+    def __init__(self, player_id):
+        self.player_id = player_id
+        self.user_cards = CardsSet()
+        self.table_cards = CardsSet()
+        self.user_set = self.user_cards + self.table_cards
 
+    def get_cards(self, deck, n_cards):
+        self.user_cards = self.user_cards + deck.pop(n_cards)
+        self.user_set = self.user_cards + self.table_cards
 
-if __name__ == '__main__':
-    a = Deck()
-    u1 = CardsSet(a.pop(2))
-    u2 = CardsSet(a.pop(2))
-    table = CardsSet(a.pop(5))
+    def add_table_cards(self, table):
+        self.table_cards = self.table_cards + table
 
-    b = CardsSet({4: (5, 6, 7, 8), 5: (9, 10)})
+    def remove_user_cards(self):
+        self.user_cards = CardsSet()
 
+    def remove_table_cards(self):
+        self.table_cards = CardsSet()
 
-    # check straights
-    print(royal_flush(CardsSet({
-        9 :(Suits.SPADE,),
-        10:(Suits.SPADE,),
-        11:(Suits.SPADE,),
-        12:(Suits.SPADE,),
-        13:(Suits.SPADE,),
-        14:(Suits.SPADE,),
-    })))
-
-    # check pairs
-
-    print(two_pairs(
-        CardsSet({
-        9 :(Suits.SPADE, Suits.HEART),
-        10:(Suits.SPADE,),
-        11:(Suits.SPADE,),
-        12:(Suits.SPADE, Suits.CLOVER),
-        13:(Suits.SPADE,),
-        14:(Suits.SPADE,),
-    })))
+    def change_user_set(self, user_set):
+        self.user_set = user_set
